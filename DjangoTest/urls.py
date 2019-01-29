@@ -15,10 +15,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from TestViews import views
 
+from django.conf.urls import url, include
+from rest_framework import routers
+
+
+from TestViews import views
+from Feelway.controller.product import registration
+from Feelway.controller.product import test_view
+
+
+router = routers.DefaultRouter()
+router.register(r'persons', views.PersonViewSet)
 
 urlpatterns = [
-    path('', views.index),
+    # path('', views.index),
     # path('admin/', admin.site.urls),
+    url(r'^', include(router.urls))
+    , url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+    , url(r'^product/', registration.index)
+    , url(r'^test-view/', test_view.index)
 ]
